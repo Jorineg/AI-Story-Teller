@@ -1,6 +1,6 @@
 generate_story_ideas:
   parameters:
-    model: gpt-4-0314
+    model: gpt-4-0613
     max_tokens: 440
     temperature: 1.1
   prompt: >
@@ -15,7 +15,7 @@ generate_story_ideas:
   
 choose_story_idea:
   parameters:
-    model: gpt-4-0314
+    model: gpt-4-0613
     max_tokens: 440
     temperature: 1.0
   prompt: >
@@ -117,7 +117,7 @@ generate_story_json:
 
 generate_paragraph_headings:
   parameters:
-    model: gpt-4-0314
+    model: gpt-4-0613
     max_tokens: 520
     temperature: 1.0
   prompt: >
@@ -148,7 +148,7 @@ generate_paragraph_headings:
 
 generate_next_paragraph:
   parameters:
-    model: gpt-4-0314
+    model: gpt-4-0613
     max_tokens: 320
     temperature: 1.0
   prompt: >
@@ -200,7 +200,7 @@ generate_image_json:
 
 generate_stable_diffusion_prompt:
   parameters:
-    model: gpt-4-0314
+    model: gpt-4-0613
     max_tokens: 600
   prompt: >
     ## Your Task
@@ -237,7 +237,7 @@ generate_stable_diffusion_prompt:
 
 generate_character_details:
   parameters:
-    model: gpt-4-0314
+    model: gpt-4-0613
     max_tokens: 600
   prompt: >
     You will be given a summary of a story and some information
