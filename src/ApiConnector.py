@@ -197,6 +197,11 @@ def generate_next_paragraph(
     line_break = "\n"
     double_line_break = "\n\n"
 
+    if previous_paragraphs:
+        list_previous_paragraphs = [
+            f"P{i+1}:{line_break+p}" for i, p in enumerate(previous_paragraphs)
+        ]
+
     model_input = f"""
         Simulation JSON:
         {modified_story_json}
@@ -205,7 +210,7 @@ def generate_next_paragraph(
         {paragraph_headings}
 
         Previous Paragraphs:
-        {f"{double_line_break.join(f"P{i+1}:{line_break+p}" for i,p in enumerate(previous_paragraphs))}" if previous_paragraphs else "None"}
+        {f"{double_line_break.join(list_previous_paragraphs)}" if previous_paragraphs else "None"}
 
         P{paragraph_nr}:
     """
