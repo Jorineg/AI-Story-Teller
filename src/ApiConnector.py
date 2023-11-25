@@ -194,15 +194,18 @@ def generate_next_paragraph(
     modified_story_json["characters"] = character_details
     modified_story_json = json.dumps(modified_story_json)
 
+    line_break = "\n"
+    double_line_break = "\n\n"
+
     model_input = f"""
-        Story JSON:
+        Simulation JSON:
         {modified_story_json}
 
-        Story Outline:
+        Outline:
         {paragraph_headings}
 
         Previous Paragraphs:
-        {f"{'\n\n'.join(f"P{i+1}:\n{p}" for i,p in enumerate(previous_paragraphs))}" if previous_paragraphs else "None"}
+        {f"{double_line_break.join(f"P{i+1}:{line_break+p}" for i,p in enumerate(previous_paragraphs))}" if previous_paragraphs else "None"}
 
         P{paragraph_nr}:
     """
