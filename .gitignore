@@ -1,0 +1,11 @@
+.env
+.pytest_cache/
+__pycache__/
+.vscode/
+stories/*
+!stories/0/
+!stories/saved_stories.json
+user_credits.json
+logs/
+experiments/
+stories/

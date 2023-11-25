@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex flex-column vh-100">
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg navbar-light"
+            style="background-color: hsla(39, 100%, 82%, 0.743); height: 60px;">
+            <div class="container">
+                <div class="d-flex align-items-center">
+                    <a class="navbar-brand mr-3" href="/">
+                        <img src="{{ url_for('static_images', filename='images/logo.png') }}" alt="logo" width="50px"
+                            height="50px">
+                        <span class="navbar-brand ml-3">AI Story Teller</span>
+                    </a>
+                    <a class="navbar-element" href="/">
+                        <span>Generate</span>
+                    </a>
+                    <a class="navbar-element" href="/publicstories">
+                        <span>Public Stories</span>
+                    </a>
+                    <a class="navbar-element" href="/mystories">
+                        <span>My Stories</span>
+                    </a>
+                    <a class="navbar-element" href="/about">
+                        <span>About</span>
+                    </a>
+                </div>
+                <div class="row" style="flex-wrap: nowrap;">
+                    <!-- <div class="col-2">
+                            <button class="btn btn-outline-dark" data-toggle="button" aria-pressed="false">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                    </div> -->
+                    {% if not user %}
+                    <div style="max-height: 40px; overflow: hidden;">
+                        <script src="https://accounts.google.com/gsi/client"></script>
+                        <div id="g_id_onload"
+                            data-client_id="493813779905-9pnlbagdh5cr0jenf8bmq91o704oqemh.apps.googleusercontent.com"
+                            data-context="signin" data-ux_mode="popup" data-login_uri="/google/auth"
+                            data-auto_prompt="false">
+                        </div>
+
+                        <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black"
+                            data-text="signin_with" data-size="large" data-logo_alignment="left" data-width="200">
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="d-flex align-items-center" style="gap: 2rem;">
+                        <p class="mb-0">Welcome, {{ user.given_name }}!</p>
+                        <p class="mb-0">{{ credits }}🪙</p>
+                        <a class="btn btn-outline-dark" href="/logout">Logout</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div style="flex-grow: 1">
+        {% block body %}
+        {% endblock %}
+    </div>
+</div>
+<script>
+    // add selected class to navbar element
+    let path = window.location.pathname;
+    let navbarElements = document.getElementsByClassName("navbar-element");
+    for (let i = 0; i < navbarElements.length; i++) {
+        let element = navbarElements[i];
+        if (element.href.endsWith(path)) {
+            element.classList.add("selected");
+        }
+    }
+</script>
+{% endblock %}

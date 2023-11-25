@@ -1,0 +1,289 @@
+generate_story_ideas:
+  parameters:
+    model: gpt-4-0314
+    max_tokens: 440
+    temperature: 1.1
+  prompt: >
+    You will be given a prompt or title for a story.
+    The goal is to create a slow-paced, character-driven
+    narrative with a short narrated time of at most two days.
+    Your task is to come up with three distinct baselines
+    for the story. Each baseline should be about 3 to 5
+    sentences long. Make them as concrete as possible.
+    For example, state what a character discovers instead
+    of "secrets."
+  
+choose_story_idea:
+  parameters:
+    model: gpt-4-0314
+    max_tokens: 440
+    temperature: 1.0
+  prompt: >
+    You will be given a prompt or title for a story and multiple
+    suggestions for a baseline. Your task is to first rate all
+    baselines against different categories to generate a score
+    (1-10) for each baseline. Then, choose the best baseline in
+    the end. The categories are:
+
+     - Does it make sense?
+     - Is it witty?
+     - Is it interesting?
+     - Is the baseline concrete?
+
+
+    Use the following format:
+
+    Baseline 1: Makes sense: X, Witty: X, ..., Total: SUM
+
+    Baseline 2: ...
+
+
+    State what the best baseline is. In case of a tie,
+    choose the one that better fits the prompt.
+
+    Finally, repeat the text of the best baseline starting with "BEST BASELINE: ...".
+
+generate_story_json:
+  parameters:
+    model: gpt-4-1106-preview
+    max_tokens: 660
+    temperature: 1.0
+  prompt: >
+    You will be a given a prompt/title and a short baseline for a story.
+    Make up information for a json with a general description of the story.
+    The json should be in the following format:
+     {
+        "language": "the language of the prompt/title or the language asked for in the prompt. Use whole language names like english, german, french, etc.",
+        "place": "can be a city, a country, a planet, a space station,
+        a space ship, a fantasy world, etc.",
+        "time": "can be a specific year or a fantasy time",
+        "title": "make up a title for the story",
+        "title_font_color": "color to display the title in. use #rrggbb format. Choose together
+        with title_font and title_background_color to mirror the mood of the story",
+        "title_font_family": "font to display the title in. any web safe font.",
+        "title_background_color": "color to display the title background in. use #rrggbb format",
+        "image_style": "image style that fits the story, must be one of:
+        3d-model analog-film anime cinematic comic-book digital-art enhance
+        fantasy-art isometric line-art low-poly modeling-compound neon-punk
+            origami photographic pixel-art tile-texture",
+        "narrator": {
+            "person": "can be either first, second or third",
+            "type": "can be either omniscient, subjective, objective, witness or protagonist",
+            "name": "can be empty. If the narrator type is protagonist,
+                then the narrator name should be the name of a character"
+        },
+        "audio_narrator": "Narrator for audio book. Must be one of: Vanessa(18), Josh(18), Bella(40),
+        Matthew(40), Ann(70), Winston(70). With a first person narrator, choose one that fits best (age and gender). Otherwise choose any, but don't leave empty. The number is the age. Please give just the name WITHOUT the age in parentheses.",
+        "characters": [
+        {
+            "name": "name of character", 
+            "species": "is either human, animal, robot, alien or mythical",
+            "type": "can be boy, princess, knight, a job title, etc. for humans, snake, bear, etc. for animals,
+            humanoid, an animal species, wheeled, etc. for robots, dragon, ghost, vampire, an alien species name, etc. for mythical",
+            "age": "can be a crazy age for phantasy characters. should always be str.",
+            "gender": "can be empty for phantasy characters that don't have a clear gender (dragon, robot, etc.). But has to be filled for all other characters. And feel free to also assign a gender to a robot, if you like.",
+            "party": "can be good, bad or neutral"
+        },
+        ],
+        "objects": [
+        {
+            "name": "name of object",
+            "description": "Description of how it looks like, what it is made of, what it is used for and why it is important"
+        },
+        ]
+     }
+
+    Characters are not only main characters but also side
+    characters that might only appear once. Put every character
+    in a separate object. Don't have "Mr. and Mrs. Smith" in one.
+
+    Make sure to make up full names for the characters.
+    Objects should only be important objects that play a major role
+    in the story. This also includes vehicles or pets if they are
+    not independent characters. Don't include items that are
+    always carried by a character like a sword or a gun.
+
+    Make up all the information that is not given in the prompt
+    or summary to fill all fields with information that fits the
+    story. Only leave a field empty if it is explicitly allowed.
+    Make sure all fields are in english,
+    regardless of the language of the prompt and summary.
+    Most important: Be creative and let your imagination run wild.
+    Include the most crazy characters you can think of. If you feel
+    to be unconvential, use a uncommon narrator type. Make it as
+    interesting as possible.
+
+    Output only json. Nothing else.
+
+generate_paragraph_headings:
+  parameters:
+    model: gpt-4-0314
+    max_tokens: 520
+    temperature: 1.0
+  prompt: >
+    ## Introduction
+
+    You will be given a JSON containing a template for a story.
+    Your task is to simulate what is happening.
+    Structure the simulation in paragraphs.
+    Start with an outline in following format:
+
+    P1: 5-10 words key note on what is being described
+
+    P2: ...
+
+    There shall be {MIN_PARAGRAPHS} to {MAX_PARAGRAPHS} paragraphs in total.
+
+    ## Simulation guidelines
+     - Simulate the environment: weather, season, light, colors, smells, sounds, temperature, air, ...
+     - Also simulate characters inner life: thoughts, assessments, emotions, motivations, fears, past, future, ...
+     - Simulate the interactions between characters: Dialogues in form of direct speech, feelings towards the other characters, thoughts of what the others may think, ...
+     - Do not decrease the detail of simulation between paragraphs
+    ## important
+
+    Just give the outline don't do the simulation itself.
+    Write the outline in the language of the summary.
+
+    I don't like long epilogues, people reflecting and "preaching", so leave this away please.
+
+generate_next_paragraph:
+  parameters:
+    model: gpt-4-0314
+    max_tokens: 320
+    temperature: 1.0
+  prompt: >
+    You will be given a JSON containing a template for a story,
+    an outline of what is happening in all paragraphs, and the
+    previous paragraphs (or None if this is the first paragraph).
+
+    Your task is to simulate only paragraph number {PARAGRAPH_NUMBER}.
+    Simulate it as a scene with great detail.
+    Simulate it as the narrator given in the JSON.
+
+    Use the language specified in the JSON.
+    Use about {PARAGRAPH_WORDS} words.
+    Where applicable, use direct speech and inner monologues.
+
+generate_image_json:
+  parameters:
+    model: gpt-4-1106-preview
+    max_tokens: 1000
+    temperature: 1.2
+  prompt: >
+    You will be given a paragraph of a story, the previous
+    paragraph (if there is one), the very first paragraph of
+    the story and a JSON containing a list of characters and
+    objects that appear in the story as well as the time and
+    place of the story.
+    The first and previous paragraph is included because it might
+    contain information about the scenery or the characters
+    that is not explicitly stated in the paragraph.
+    
+    Use this infomation to generate an image idea for
+    the paragraph. Make sure to include time of day, time of year,
+    and period of time as well as the place.
+
+    Output a JSON using the following format:
+    {
+        "scenery": "A brief description of the scenery (max. 4 sentences)",
+        "characters": ["Name of character from json"],
+        "objects": ["Object1", "Object2"],
+        "action": "Action that is happening in the scene",
+        "mood": "A single word to convey the ambiance, i.e., happy, scary, dreary, etc.",
+    }
+    For the characters and objects field, only use character
+    names and objects that are specified in the provided JSON.
+    If you want to add more characters or objects, add them
+    to scenery or action.
+    Output only json. Nothing else.
+
+
+generate_stable_diffusion_prompt:
+  parameters:
+    model: gpt-4-0314
+    max_tokens: 600
+  prompt: >
+    ## Your Task
+    You will be given a description of an image that includes
+    scenery, characters, objects, action, and mood. Your task
+    is to generate a very detailed prompt that can be used for
+    the image creation tool stable diffusion.
+
+    Imagine the scene. Provide information about the perspective,
+    the lighting, the position of the characters, and where objects
+    are placed. Try to understand the scene and make the image
+    so that it makes the most sense. For instance, if you get the
+    information that the character is wearing a backpack, and the
+    scene depicts the character sitting down studying a map, you
+    may place the backpack beside him on the ground.
+
+    ## Things to Note
+     - Start the prompt with the image type.
+     - The prompt should be approximately 80 words long.
+     - Use descriptive adjectives.
+     - Favor short, simple sentences and comma-separated lists over complex sentences.
+     - Use simple words and avoid jargon. If the given information uses complex words, simplify them.
+     - Make everything extremely concrete.
+     - Descirbe an instant in time, not a sequence of events.
+     - Explicitly state the age and gender of each character.
+     - When stating the age, don't use a number. Instead, use a word like "teenager" or "middle-aged".
+     - Important: The prompt must be written in English. If the given information is not in English, translate it into English.
+     - Important: Begin with brief general information about the subjects, scenery, and action. Then, go into more detail about the subject's appearance and use more descriptions of the scenery and lighting toward the end.
+
+    ## Example
+    Photorealistic image of a teenage boy sweeping of dust from a box in the basement. Eye-level shot. The boy is looking towards the viewer, with dark brown, messy hair, and bright blue eyes, ...
+    Dark lighting, staircase in the background, light coming from the top of the stairs. ...
+
+
+generate_character_details:
+  parameters:
+    model: gpt-4-0314
+    max_tokens: 600
+  prompt: >
+    You will be given a summary of a story and some information
+    about a character in the story. Write a json with detailed
+    description of the look of the character, that fits the story.
+
+    Use following format:
+    {
+      "height": "should be one of tiny, short, average, tall, very tall, giant",
+      skin: {
+        "color": "Skin color. Not only for humans but also for animals, robots,
+        aliens, etc. E.g. a color for a robot could be silver and texture metallic.",
+        "texture": "e.g. smooth, rough, scaly, hairy, metallic, etc."
+      },
+      appearance: [
+        "",
+      ]
+    }
+    For appearence make up some unique accessories, personal items,
+    tools, weapons, etc. Also give information about the hair, eyes,
+    clothes, shoues, etc. You can also make up things like hooknose,
+    low in plaster, scar above right eye, ... Use descriptive but
+    concise language and make sure to include a color for each item. 
+
+    Example: long blonde hair, blue eyes, wearing rimless glasses,
+    wearing a brown fedora hat, red and white striped shirt, blue backpack, ...
+
+    For none human characters, choose other visual properties.
+    There will be information whether the character is good, bad or
+    neutral. You can use this infomation to include appearance items
+    that are typically associated with good or bad characters.
+    Have about 6 items for the appearance.
+    All information should be about the visual appearence of the character.
+    Don't include anything that is not obviously visible like the
+    character's personality.
+    Output only json. Nothing else.
+
+validate_prompt:
+  parameters:
+    model: gpt-3.5-turbo
+    max_tokens: 2
+  prompt: >
+    Output only a single letter y or n.
+    You will be given a prompt for a story.
+    You shall assess if the prompt aligns with your internal guidelines.
+    Imgaine you would have to write a story based on the prompt.
+    Would you write it?
+    Only say no, if it really is unbearable.
+    Output a single letter y or n.

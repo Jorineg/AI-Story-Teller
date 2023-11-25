@@ -1,0 +1,22 @@
+{% extends "base_home.html" %}
+{% block body %}
+<div id="intro" class="text-center bg-image h-100"
+    style="background-image: url('{{ url_for('static_images', filename='images/landscape.jpg') }}'); background-size: cover">
+    <div class="mask h-100" style="background-color: rgba(255, 255, 255, 0.35);">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <div class="text-black mb-4" style="width: 70%;">
+                <h1 class="mb-5">Your story is ready</h1>
+                <h1 class="mb-5">Press the button below to start</h1>
+            </div>
+            <button class="btn btn-outline-success" style="width: 80px;" onclick="start()">Start</button>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='scripts/story_view.js') }}"></script>
+<!-- <script>
+    function startStory() {
+        hash_id = window.location.href.split("/").pop();
+        window.location.href = "/story/" + hash_id + "/start";
+    }
+</script> -->
+{% endblock %}

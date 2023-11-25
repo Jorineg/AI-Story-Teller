@@ -1,0 +1,46 @@
+{% extends "base_home.html" %}
+{% block body %}
+<!-- <div id="intro" class="text-center bg-image wh-100"
+    style="background-image: url('{{ url_for('static_images', filename='images/landscape.jpg') }}'); background-size: cover"> -->
+<div class="container mt-4">
+    <div class="row">
+        {% for story in stories %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <!-- show little box with story thumbnail, below is the title in one row, below is on the left the view count and on the right the creation date -->
+                <div class="card-body clickable-div" onclick="viewStory('{{story.hash_id}}')">
+                    <img src="{{ story.thumbnail }}" alt="story thumbnail" width="100%">
+                    <h4 class="card-title">{{ story.title }}</h4>
+                    <div class="d-flex justify-content-between">
+                        <p class="card-text">Views: {{ story.views }}</p>
+                        <p class="card-text">
+                            <time datetime="{{ story.date }}">{{ story.date }}</time>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- </div> -->
+<script>
+    function viewStory(hash_id) {
+        window.location.href = "/story/" + hash_id;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'scale(1.05)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{
+    "title": "Journey of Aurora and Seraphim: The Cosmic Odyssey",
+    "language": "English",
+    "place": "Universe, aboard the spaceship Nebula",
+    "time": "The Space Age",
+    "summary": "Two unlikely companions, Aurora, a timeless fairy from the enchanted forests of Earth, and Seraphim, a 13-year-old robot operating the spaceship Nebula, find themselves on an extraordinary journey across the cosmos. Together, they navigate space-time conundrums, battle dark forces, and unravel cosmic mysteries. Can the magic of a fairy and the logic of a young robot save the universe from impending doom? Join them on a quest filled with friendship, adventure, and the wonders of the boundless universe.",
+    "image_style": "anime",
+    "narrator": {
+        "person": "third",
+        "type": "omniscient",
+        "name": ""
+    },
+    "characters": [
+        {
+            "name": "Aurora",
+            "species": "mythical",
+            "type": "fairy",
+            "age": "timeless",
+            "gender": "female",
+            "party": "good"
+        },
+        {
+            "name": "Seraphim",
+            "species": "robot",
+            "type": "huma"

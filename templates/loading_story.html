@@ -1,0 +1,41 @@
+{% extends "base_home.html" %}
+{% block body %}
+<div id="intro" class="text-center bg-image h-100"
+    style="background-image: url('{{ url_for('static_images', filename='images/landscape.jpg') }}'); background-size: cover">
+    <div class="mask h-100" style="background-color: rgba(255, 255, 255, 0.35);">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100">
+            <div class="text-black mb-4" style="width: 70%;">
+                <h1 class="mb-5">Let me think for a moment...</h1>
+            </div>
+            <h4 class="mb-5">This takes usually about 30s</h4>
+            <!-- use spinner.gif from static/images instead of basic spinner -->
+            <img src="{{ url_for('static_images', filename='images/spinner.gif') }}" alt="spinner" width="100px"
+                height="100px">
+            <!-- <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- <audio autoplay>
+    <source src="{{ url_for('static', filename='sounds/wait_0.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio> -->
+<script>
+    setInterval(function () {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("xhttp response for next check if ready: " + this.responseText);
+                if (this.responseText == "true") {
+                    hash_id = window.location.href.split("/").pop();
+                    window.location.href = "/story/" + hash_id + "/ready";
+                }
+            }
+        };
+        xhttp.open("GET", "/checknextsectionready", true);
+        xhttp.send();
+        console.log("xhttp send for next check if ready");
+    }, 1000);
+</script>
+{% endblock %}

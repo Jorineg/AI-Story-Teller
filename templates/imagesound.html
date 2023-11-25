@@ -1,0 +1,33 @@
+<div class="bg-color" style="background-color: black; height: 100vh;">
+    {% if image_url %}
+    <div class="bg-image" id="bg-image"
+        style="background-image: url({{ image_url }}); background-size: cover; background-position: center center; height: 100vh;">
+    </div>
+    {% else %}
+    <div id="bg-image" class="bg-color"
+        style="background-color: {{ text.bg_color }}; height: 100vh; display: flex; justify-content: center; align-items: center;  transition: opacity 2s ease-in-out;">
+        <p style="color: {{ text.text_color }}; font-family: {{ text.font }};font-size: {{ text.font_size }};">
+            {{
+            text.text }} </p>
+    </div>
+    {% endif %}
+</div>
+<style>
+    .bg-image {
+        opacity: 0;
+        background-color: black;
+        transition: opacity 2s ease-in-out;
+    }
+
+    p {
+        font-size: 40px;
+    }
+</style>
+{% if sound_url %}
+<audio autoplay id="narrator">
+    <source src="{{ sound_url }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+{% else %}
+<!-- endofstorytag -->
+{% endif %}

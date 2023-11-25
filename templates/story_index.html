@@ -1,0 +1,132 @@
+{% extends "base_home.html" %}
+{% block body %}
+<!-- display story image on the left.
+    Below the image on the left is the view count and on the right the creation date.
+    On top of the image is a play button to start the story. (links to /story/{{story.hash_id}}/start)
+    Right side has the title and a summary below.
+    Below the summary there is a share button. 
+    The share button just copies the url to clipboard on desktop devices and
+    opens sharing dialoge with the link on mobile devices. -->
+<div class="container-fluid mt-4 px-3">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ story.thumbnail }}" alt="story thumbnail" width="100%">
+            <div class="d-flex justify-content-between">
+                <p class="card-text">Views: {{ story.views }}</p>
+                <p class="card-text">
+                    <time datetime="{{ story.date }}">{{ story.date }}</time>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1>{{ story.title }}</h1>
+            <p>{{ story.summary }}</p>
+            <button class="btn btn-primary" onclick="start()">Start</button>
+            <button class="btn btn-primary" onclick="shareStory()">Share</button>
+            <!-- if flat allow_edit is true, you can set the access options with radio buttons to either "private", "link" or "public" -->
+            {% if story.allow_edit %}
+            <h2>Access Settings</h2>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="access" id="private" value="private" {% if
+                    story.visibility=="private" %}checked{% endif %}>
+                <label class="form-check-label" for="private">
+                    Private (only you can see the story)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="access" id="unlisted" value="unlisted" {% if
+                    story.visibility=="unlisted" %}checked{% endif %}>
+                <label class="form-check-label" for="link">
+                    Unlisted (the story is accessible for everyone with the link, but not listed on the homepage)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="access" id="public" value="public" {% if
+                    story.visibility=="public" %}checked{% endif %}>
+                <label class="form-check-label" for="public">
+                    Public (the story is accessible for everyone and listed on the homepage)
+                </label>
+            </div>
+            <button class="btn btn-primary" onclick="setAccess()">Save</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='scripts/story_view.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    function shareStory() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ story.title }}',
+                text: '{{ story.summary }}',
+                url: window.location.href
+            }).then(() => {
+                console.log('Thanks for sharing!');
+            })
+                .catch(console.error);
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(function () {
+                console.log('Async: Copying to clipboard was successful!');
+                // display toast
+                Toastify({
+                    text: 'Link copied to clipboard!',
+                    duration: 3000,  // Display duration in milliseconds
+                    gravity: 'bottom',  // Toast position
+                    position: 'right',  // Toast position
+                    backgroundColor: 'green',  // Toast background color
+                }).showToast();
+            }, function (err) {
+                console.error('Async: Could not copy text: ', err);
+            });
+        }
+    }
+    function setAccess() {
+        const radios = document.getElementsByName('access');
+        let access = "";
+        for (let i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                access = radios[i].value;
+                break;
+            }
+        }
+        if (access === "") {
+            Toastify({
+                text: 'Please select an access option!',
+                duration: 3000,  // Display duration in milliseconds
+                gravity: 'bottom',  // Toast position
+                position: 'right',  // Toast position
+                backgroundColor: 'red',  // Toast background color
+            }).showToast();
+            return;
+        }
+        fetch('/story/{{story.hash_id}}/access', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                visibility: access
+            })
+        }).then(response => {
+            if (response.status === 200) {
+                Toastify({
+                    text: 'Access settings saved!',
+                    duration: 3000,  // Display duration in milliseconds
+                    gravity: 'bottom',  // Toast position
+                    position: 'right',  // Toast position
+                    backgroundColor: 'green',  // Toast background color
+                }).showToast();
+            } else {
+                Toastify({
+                    text: 'Error saving access settings!',
+                    duration: 3000,  // Display duration in milliseconds
+                    gravity: 'bottom',  // Toast position
+                    position: 'right',  // Toast position
+                    backgroundColor: 'red',  // Toast background color
+                }).showToast();
+            }
+        });
+    }
+</script>
+{% endblock %}
