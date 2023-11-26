@@ -7,48 +7,58 @@
     Below the summary there is a share button. 
     The share button just copies the url to clipboard on desktop devices and
     opens sharing dialoge with the link on mobile devices. -->
-<div class="container-fluid mt-4 px-3">
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ story.thumbnail }}" alt="story thumbnail" width="100%">
-            <div class="d-flex justify-content-between">
-                <p class="card-text">Views: {{ story.views }}</p>
-                <p class="card-text">
-                    <time datetime="{{ story.date }}">{{ story.date }}</time>
-                </p>
+<div class="d-flex flex-column justify-content-center h-100">
+    <div class="container-fluid mt-4 px-3">
+        <div class="row">
+            <div class="col-md-6 px-0 mx-2" style="position: relative;">
+                <img src="{{ story.thumbnail }}" alt="story thumbnail" width="100%">
+                <div class="d-flex justify-content-between"
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <button onclick="start()" type="button" class="btn btn-outline-light"
+                        style="background: none; border: none; padding: 0; font-size: 30px;">
+                        <i class="far fa-play-circle fa-lg"></i>
+                    </button>
+                </div>
+                <div class="d-flex justify-content-between"
+                    style="position: absolute; top: 100%; width: 100%; text-align: center;">
+                    <p class="card-text">Views: {{ story.views }}</p>
+                    <p class="card-text">
+                        <time datetime="{{ story.date }}">{{ story.date }}</time>
+                    </p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <h1>{{ story.title }}</h1>
-            <p>{{ story.summary }}</p>
-            <button class="btn btn-primary" onclick="start()">Start</button>
-            <button class="btn btn-primary" onclick="shareStory()">Share</button>
-            <!-- if flat allow_edit is true, you can set the access options with radio buttons to either "private", "link" or "public" -->
-            {% if story.allow_edit %}
-            <h2>Access Settings</h2>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="access" id="private" value="private" {% if
-                    story.visibility=="private" %}checked{% endif %}>
-                <label class="form-check-label" for="private">
-                    Private (only you can see the story)
-                </label>
+            <div class="col-md-5 d-flex flex-column justify-content-center px-0 mx-2">
+                <h1>{{ story.title }}</h1>
+                <p>{{ story.summary }}</p>
+                <!-- <button class="btn btn-primary" onclick="start()">Start</button> -->
+                <!-- <button class="btn btn-primary" onclick="shareStory()">Share</button> -->
+                <!-- if flat allow_edit is true, you can set the access options with radio buttons to either "private", "link" or "public" -->
+                {% if story.allow_edit %}
+                <h2 class="mt-2">Access Settings</h2>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="access" id="private" value="private" {% if
+                        story.visibility=="private" %}checked{% endif %}>
+                    <label class="form-check-label" for="private">
+                        Private (only you can see the story)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="access" id="unlisted" value="unlisted" {% if
+                        story.visibility=="unlisted" %}checked{% endif %}>
+                    <label class="form-check-label" for="unlisted">
+                        Unlisted (the story is accessible for everyone with the link, but not listed on the homepage)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="access" id="public" value="public" {% if
+                        story.visibility=="public" %}checked{% endif %}>
+                    <label class="form-check-label" for="public">
+                        Public (the story is accessible for everyone and listed on the homepage)
+                    </label>
+                </div>
+                <button class="btn btn-outline-dark" onclick="setAccess()">Save setting</button>
+                {% endif %}
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="access" id="unlisted" value="unlisted" {% if
-                    story.visibility=="unlisted" %}checked{% endif %}>
-                <label class="form-check-label" for="link">
-                    Unlisted (the story is accessible for everyone with the link, but not listed on the homepage)
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="access" id="public" value="public" {% if
-                    story.visibility=="public" %}checked{% endif %}>
-                <label class="form-check-label" for="public">
-                    Public (the story is accessible for everyone and listed on the homepage)
-                </label>
-            </div>
-            <button class="btn btn-primary" onclick="setAccess()">Save</button>
-            {% endif %}
         </div>
     </div>
 </div>
