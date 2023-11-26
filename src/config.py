@@ -12,7 +12,7 @@ DISPLAY_DATE_FORMAT = "%Y-%m-%d"
 STORAGE_DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
 
 prompt_params = {
-    "MIN_PARAGRAPHS": 15,
-    "MAX_PARAGRAPHS": 20,
+    "MIN_PARAGRAPHS": 8,
+    "MAX_PARAGRAPHS": 12,
     "PARAGRAPH_WORDS": 120,
 }
