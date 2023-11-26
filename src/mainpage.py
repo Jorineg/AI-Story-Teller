@@ -30,6 +30,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, static_folder=STATIC_FOLDER, template_folder=TEMPLATE_FOLDER)
 app.secret_key = os.urandom(12)
 
+session.permanent = True
 
 app.add_url_rule(
     f"/stories/<path:filename>",
