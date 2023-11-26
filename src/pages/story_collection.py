@@ -15,7 +15,7 @@ def my_stories_page():
 
     stories = []
     for story in get_all_stories():
-        if story_is_valid(story) and check_story_access(story, session):
+        if story_is_valid(story) and story["user"]["email"] == session["user"]["email"]:
             story_data = {
                 "title": story["title"] if "title" in story else story["query"],
                 "hash_id": story["hash_id"],
