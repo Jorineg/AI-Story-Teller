@@ -39,13 +39,19 @@ with open(f"{ROOT_PATH}/prompts.yaml", "r") as f:
 client = OpenAI()
 
 
-def gpt_request(prompt_name, model_input, extra_prompt_params={}):
+def gpt_request(
+    prompt_name, model_input, use_gpt_3_turbo=False, extra_prompt_params={}
+):
     prompt = stored_prompts[prompt_name]
     all_prompt_params = {**prompt_params, **extra_prompt_params}
     for key, value in all_prompt_params.items():
         prompt["prompt"] = prompt["prompt"].replace(f"{{{key}}}", str(value))
     params = default_model_parameters.copy()
     params.update(prompt["parameters"])
+
+    if use_gpt_3_turbo:
+        params["model"] = "gpt-3.5-turbo"
+
     messages = [
         {"role": "system", "content": prompt["prompt"]},
         {"role": "user", "content": model_input},
@@ -214,9 +220,17 @@ def generate_next_paragraph(
 
         P{paragraph_nr}:
     """
+
+    use_gpt_3_turbo = paragraph_nr > 3
+
     extra_prompt_params = {"PARAGRAPH_NUMBER": paragraph_nr}
     response = "".join(
-        gpt_request("generate_next_paragraph", model_input, extra_prompt_params)
+        gpt_request(
+            "generate_next_paragraph",
+            model_input,
+            use_gpt_3_turbo=use_gpt_3_turbo,
+            extra_prompt_params=extra_prompt_params,
+        )
     )
     # check if response contains "PX:" (and optional new line) where X is any number
     # first check for match at very beginning of response
