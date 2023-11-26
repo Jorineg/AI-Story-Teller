@@ -36,6 +36,7 @@ def story_index_page(hash_id):
         "summary": story["summary"] if "summary" in story else "",
         # use the first image because the thumbnail is too small
         "thumbnail": url_for("stories", filename=f"{story['id']}/images/1.png"),
+        "prompt": story["query"],
     }
     if check_story_owner(story, session):
         story_data["allow_edit"] = True
