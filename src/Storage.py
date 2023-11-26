@@ -40,7 +40,7 @@ def update_stored_story(story):
 def store_new_story(**info):
     with open(f"{root_path}/stories/saved_stories.json", "r") as f:
         json_data = json.load(f)
-    max_id = max(story["id"] for story in json_data)
+    max_id = max((story["id"] for story in json_data), default=0)
     story_id = max_id + 1
     new_story_data = {"id": story_id, **info}
     json_data.append(new_story_data)
