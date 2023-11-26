@@ -58,6 +58,14 @@ function fetch_next_imagesound() {
                 html = this.responseText;
             }
 
+            // if html doesn't start with <!--waiting-->, <!-- imagesound -->, or <!-- endofstorytag -->,
+            // then something went wrong and we want to redirect to /
+            if (!html.startsWith("<!--waiting-->") && !html.startsWith("<!-- imagesound -->") && !html.startsWith("<!-- endofstorytag -->")) {
+                console.log("redirecting to /");
+                window.location.href = "/";
+                return;
+            }
+
             show_immediately = document.body.innerHTML.startsWith("<!--waiting-->");
             if (show_immediately) {
                 load_next_image(html);
