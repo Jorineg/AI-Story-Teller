@@ -5,9 +5,10 @@
     <div class="mask h-100" style="background-color: rgba(255, 255, 255, 0.35);">
         <div class="d-flex flex-column justify-content-center align-items-center h-100">
             <div class="text-black mb-4" style="width: 70%;">
-                <h1 class="mb-5">Let me think for a moment...</h1>
+                <h1 class="mb-5">Your story is being generated...</h1>
             </div>
-            <h4 class="mb-5">This takes usually about 3 minutes</h4>
+            <h4 class="mb-5">This takes usually about 45 minutes</h4>
+            <h4 class="mb-5">Do not leave this page</h4>
             <!-- use spinner.gif from static/images instead of basic spinner -->
             <img src="{{ url_for('static_images', filename='images/spinner.gif') }}" alt="spinner" width="100px"
                 height="100px">
@@ -22,12 +23,14 @@
     Your browser does not support the audio element.
 </audio> -->
 <script>
+    start_time = new Date().getTime();
     setInterval(function () {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log("xhttp response for next check if ready: " + this.responseText);
-                if (this.responseText == "true") {
+                // also wait min 45 minutes
+                if (this.responseText == "true" && new Date().getTime() - start_time > 2700000) {
                     hash_id = window.location.href.split("/").pop();
                     window.location.href = "/story/" + hash_id + "/ready";
                 }
