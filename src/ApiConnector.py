@@ -14,7 +14,12 @@ from JsonSchemas import (
 import json
 import copy
 import time
-from config import ROOT_PATH, MAX_RETRY_RESPONSE_FORMAT_FAIL, prompt_params
+from config import (
+    ROOT_PATH,
+    MAX_RETRY_RESPONSE_FORMAT_FAIL,
+    prompt_params,
+    MAX_IMAGE_RETRY_COUNT,
+)
 import logging
 from Logging import create_gpt_log, add_gpt_log_response, complete_gpt_log
 import re
@@ -420,7 +425,7 @@ def generate_audio(narrator, section_nr, text, story_id):
     return True
 
 
-def generate_image(section_nr, image_prompt, story_id, baseline):
+def generate_image(section_nr, image_prompt, story_id, baseline, retry=0):
     api_host = "https://api.stability.ai"
     engine_id = "stable-diffusion-xl-1024-v1-0"
     generation_endpoint = f"/v1/generation/{engine_id}/text-to-image"
@@ -467,7 +472,12 @@ def generate_image(section_nr, image_prompt, story_id, baseline):
     data = response.json()
     image = data["artifacts"][0]
     if image["finishReason"] != "SUCCESS":
-        raise Exception("Image generation failed\n" + image["finishReason"])
+        if retry > MAX_IMAGE_RETRY_COUNT:
+            raise Exception("Image generation failed\n" + image["finishReason"])
+        logger.warning(
+            f"Image generation failed for section {section_nr}. Reason: {image['finishReason']}"
+        )
+        return generate_image(section_nr, image_prompt, story_id, baseline, retry + 1)
     image_data = base64.b64decode(image["base64"])
     with open(f"{ROOT_PATH}/stories/{story_id}/images/{section_nr}.png", "wb") as f:
         f.write(image_data)
