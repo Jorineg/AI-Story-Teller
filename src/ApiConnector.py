@@ -396,7 +396,7 @@ def generate_audio(narrator, section_nr, text, story_id):
     narrator_map = {
         "Vanessa": "3ARdf6wTw5HVbUm0EVtt",
         "Josh": "BAQmo5xF1wQVvtrEmoNY",
-        "Bella": "Bella",
+        "Bella": "9RSRUmC0WRdWpNCmcO92",
         "Matthew": "eqFDBBoxsDMCl1xXmRhZ",
         "Ann": "GF9c4URMiVpQ372hFkjL",
         "Winston": "SmJU8f86ds5LWKhsyDw3",
