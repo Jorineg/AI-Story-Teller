@@ -219,6 +219,8 @@ generate_stable_diffusion_prompt:
 
     ## Things to Note
      - Start the prompt with the image type.
+     - Then, describe the scenery, characters, objects and action each in only few words.
+     - In the end, go into more detail about the characters appearance and use more descriptions of the scenery and lighting.
      - The prompt should be approximately 80 words long.
      - Use descriptive adjectives.
      - Favor short, simple sentences and comma-separated lists over complex sentences.
@@ -228,7 +230,6 @@ generate_stable_diffusion_prompt:
      - Explicitly state the age and gender of each character.
      - When stating the age, don't use a number. Instead, use a word like "teenager" or "middle-aged".
      - Important: The prompt must be written in English. If the given information is not in English, translate it into English.
-     - Important: Begin with brief general information about the subjects, scenery, and action. Then, go into more detail about the subject's appearance and use more descriptions of the scenery and lighting toward the end.
 
     ## Example
     Photorealistic image of a teenage boy sweeping of dust from a box in the basement. Eye-level shot. The boy is looking towards the viewer, with dark brown, messy hair, and bright blue eyes, ...
