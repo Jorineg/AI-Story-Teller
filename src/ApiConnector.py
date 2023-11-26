@@ -221,7 +221,8 @@ def generate_next_paragraph(
         P{paragraph_nr}:
     """
 
-    use_gpt_3_turbo = paragraph_nr > 3
+    # use_gpt_3_turbo = paragraph_nr > 3
+    use_gpt_3_turbo = False
 
     extra_prompt_params = {"PARAGRAPH_NUMBER": paragraph_nr}
     response = "".join(
