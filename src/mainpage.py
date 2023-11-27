@@ -22,13 +22,16 @@ from routes.check_next_section_ready import check_next_section_ready_route
 from routes.access import edit_access_route
 from Logging import setup_logging
 import logging
+from flask_session import Session
 
 setup_logging()
 logger = logging.getLogger(__name__)
 
 
 app = Flask(__name__, static_folder=STATIC_FOLDER, template_folder=TEMPLATE_FOLDER)
-app.secret_key = os.urandom(12)
+app.secret_key = os.urandom(24)
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
 app.add_url_rule(
