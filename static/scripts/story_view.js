@@ -126,6 +126,14 @@ function start() {
     var story_id = window.location.pathname.split("story/")[1].split("/")[0];
     xhttp.open("GET", "/story/" + story_id + "/start", true);
     xhttp.send();
+
+    // register keypress right arrow to go to next image
+    document.addEventListener("keydown", function (event) {
+        if (event.keyCode == 39) {
+            load_next_image(buffer);
+            buffer = spinner;
+        }
+    });
 }
 
 
