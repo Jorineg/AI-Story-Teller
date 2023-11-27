@@ -468,7 +468,14 @@ def generate_image(section_nr, image_prompt, story_id, baseline, retry=0):
         headers=headers,
         json=json,
     )
-    response.raise_for_status()
+    if response.status_code != 200:
+        if retry > MAX_IMAGE_RETRY_COUNT:
+            raise Exception("Image generation failed\n" + response.text)
+        logger.warning(
+            f"Image generation failed for section {section_nr}. Reason: {response.text}"
+        )
+        time.sleep(1)
+        return generate_image(section_nr, image_prompt, story_id, baseline, retry + 1)
     data = response.json()
     image = data["artifacts"][0]
     if image["finishReason"] != "SUCCESS":
