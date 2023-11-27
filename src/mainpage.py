@@ -108,6 +108,7 @@ def my_stories():
 
 @app.route("/nextimagesound")
 def next_image_sound():
+    logger.warning(session)
     return next_image_sound_route()
 
 
