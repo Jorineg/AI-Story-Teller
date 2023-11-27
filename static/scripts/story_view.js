@@ -32,6 +32,14 @@ function load_next_image(data) {
     function set_html() {
         if (data != document.body.innerHTML) {
             document.body.innerHTML = data;
+
+            // if html doesn't start with <!--waiting-->, <!-- imagesound -->, or <!-- endofstorytag -->,
+            // then something went wrong and we want to redirect to /
+            if (!data.startsWith("<!--waiting-->") && !data.startsWith("<!-- imagesound -->") && !data.startsWith("<!-- endofstorytag -->")) {
+                console.log("redirecting to /");
+                window.location.href = "/";
+                return;
+            }
         }
         if (!data.startsWith("<!--waiting-->")) {
             onNewImageLoaded();
@@ -56,14 +64,6 @@ function fetch_next_imagesound() {
                 setTimeout(fetch_next_imagesound, 1000);
             } else {
                 html = this.responseText;
-            }
-
-            // if html doesn't start with <!--waiting-->, <!-- imagesound -->, or <!-- endofstorytag -->,
-            // then something went wrong and we want to redirect to /
-            if (!html.startsWith("<!--waiting-->") && !html.startsWith("<!-- imagesound -->") && !html.startsWith("<!-- endofstorytag -->")) {
-                console.log("redirecting to /");
-                window.location.href = "/";
-                return;
             }
 
             show_immediately = document.body.innerHTML.startsWith("<!--waiting-->");
