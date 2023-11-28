@@ -1,1 +1,19 @@
-
+on: push
+name: Publish Website
+jobs:
+  web-deploy:
+    name: 🚀 Deploy Website Every Commit
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚀 Deploy Website
+      uses: appleboy/ssh-action@master
+      with:
+        host: jorin.createuky.net
+        username: jorincre
+        key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.SSH_KEY_PASSPHRASE }}
+        port: 22
+        script: |
+          cd ~/storyteller/AI-Story-Teller/
+          git pull
+          touch src/tmp/restart.txt
