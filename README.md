@@ -1,4 +1,6 @@
 # AI Storyteller - Web application to generate and present stories
+![image](https://github.com/Jorineg/AI-Story-Teller/assets/65853883/74207a8a-7574-4601-99b6-4bc106aa4d23)
+
 See live demo at https://jorin.createuky.net/
 
 This is a Flask based server that generates a story based on a given prompt or title.
